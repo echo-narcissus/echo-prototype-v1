@@ -24,6 +24,7 @@ pub enum Operation { // Enums of structs are so cool
 pub fn parse_message_from_buffer(
     buffer: &mut Vec<u8>,
     msg_id_size: usize,
+    verbose: bool
 ) -> Option<Operation> {
     if buffer.is_empty() {
         return None;
@@ -31,8 +32,14 @@ pub fn parse_message_from_buffer(
 
     let op_type = buffer[0];
     match op_type {
-        OP_STORE => parse_store_op(buffer, msg_id_size),
-        OP_RETRIEVE => parse_retrieve_op(buffer, msg_id_size),
+        OP_STORE => {
+            if verbose {println!("Store Operation Recieved");}
+            parse_store_op(buffer, msg_id_size)
+        },
+        OP_RETRIEVE => {
+            if verbose {println!("Retrieve Operation Recieved");}
+            parse_retrieve_op(buffer, msg_id_size)
+        }
         _ => {
             // Invalid op_type, clear buffer to prevent looping
             // TODO: This could lead to dropping messages, which is not good

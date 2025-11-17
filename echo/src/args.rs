@@ -23,6 +23,9 @@ pub(crate) struct Cli {
     // Size of the message ID in bytes (512 / 8 = 64)
     #[arg(short, long, default_value_t = 64)]
     pub(crate) msg_id_size: usize,
+    
+    #[arg(short, long, default_value_t = false)]
+    pub(crate) verbose: bool,
 }
 
 impl Cli {

@@ -47,7 +47,7 @@ impl TlsServer {
     }
  
     // Main server event loop
-    pub(crate) fn run(&mut self) -> io::Result<()> {
+    pub(crate) fn run(&mut self, verbose: bool) -> io::Result<()> {
         let mut events = Events::with_capacity(1024);
         loop {
             self.poll.poll(&mut events, None)?;
@@ -56,7 +56,7 @@ impl TlsServer {
                 match event.token() {
                     SERVER_TOKEN => {
                         // New connections
-                        self.accept_connections()?;
+                        self.accept_connections(verbose)?;
                     }
                     token => {
                         // Event on existing connection
@@ -68,7 +68,7 @@ impl TlsServer {
     }
 
     // Accept pending connections
-    fn accept_connections(&mut self) -> io::Result<()> {
+    fn accept_connections(&mut self, verbose: bool) -> io::Result<()> {
         loop {
             match self.server_socket.accept() {
                 Ok((socket, addr)) => {
@@ -89,6 +89,7 @@ impl TlsServer {
                         self.tls_config.clone(),
                         self.message_store.clone(),
                         self.msg_id_size,
+                        verbose
                     )?;
 
                     entry.insert(connection).register(&mut self.poll);

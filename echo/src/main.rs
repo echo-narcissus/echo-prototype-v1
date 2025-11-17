@@ -51,7 +51,7 @@ fn main() {
         }
     };
 
-    if let Err(e) = tls_server.run() {
+    if let Err(e) = tls_server.run(cli.verbose) {
         eprintln!("Server runtime error: {}", e);
     }
 

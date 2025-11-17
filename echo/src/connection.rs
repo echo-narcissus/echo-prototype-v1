@@ -9,6 +9,8 @@ use std::io::{self, Read, Write};
 use std::sync::Arc;
 
 pub struct Connection {
+    verbose: bool,
+    closing: bool,
     socket: TcpStream,
     token: Token,
     tls_conn: ServerConnection,
@@ -19,8 +21,6 @@ pub struct Connection {
     outgoing_plaintext_buffer: Vec<u8>, // message
   
     outgoing_tls_buffer: Vec<u8>,
-
-    closing: bool,
 }
 
 impl Connection {
@@ -30,6 +30,7 @@ impl Connection {
         tls_config: Arc<ServerConfig>,
         message_store: SharedMessageStore,
         msg_id_size: usize,
+        verbose: bool
     ) -> io::Result<Self> {
         let tls_conn = ServerConnection::new(tls_config)
             .map_err(|e| io::Error::new(io::ErrorKind::Other, e))?;
@@ -44,6 +45,7 @@ impl Connection {
             outgoing_plaintext_buffer: Vec::new(),
             outgoing_tls_buffer: Vec::new(),
             closing: false,
+            verbose
         })
     }
 
@@ -129,6 +131,7 @@ impl Connection {
         while let Some(op) = protocol::parse_message_from_buffer(
             &mut self.incoming_plaintext_buffer,
             self.msg_id_size,
+            self.verbose
         ) {
             self.handle_operation(op);
         }

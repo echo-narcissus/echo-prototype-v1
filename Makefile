@@ -40,6 +40,18 @@ start_default:
 	@echo "Starting default server..."
 	@$(BIN_DIR)/$(BINARY_NAME) -k $(KEY_FILE) -c $(CERT_FILE)
 
+start_tiny:
+	@if [ ! -f $(BIN_DIR)/$(BINARY_NAME) ]; then \
+		echo "Binary not found. Running build..."; \
+		$(MAKE) build; \
+	fi
+	@if [ ! -f $(KEY_FILE) ] || [ ! -f $(CERT_FILE) ]; then \
+		echo "Keys not found. Running tls..."; \
+		$(MAKE) tls; \
+	fi
+	@echo "Starting server with 1 byte message ID length..."
+	@$(BIN_DIR)/$(BINARY_NAME) -k $(KEY_FILE) -c $(CERT_FILE) -m 1
+
 clean:
 	@echo "Cleaning build artifacts and keys..."
 	@rm -rf $(BIN_DIR) $(KEY_DIR)
