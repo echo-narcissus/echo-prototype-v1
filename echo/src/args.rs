@@ -17,11 +17,11 @@ pub(crate) struct Cli {
     pub(crate) port: u16,
 
     // IP Address to bind to
-    #[arg(long, default_value = "127.0.0.1")]
+    #[arg(short, long, default_value = "127.0.0.1")]
     pub(crate) bind_addr: String,
 
     // Size of the message ID in bytes (512 / 8 = 64)
-    #[arg(long, default_value_t = 64)]
+    #[arg(short, long, default_value_t = 64)]
     pub(crate) msg_id_size: usize,
 }
 

@@ -54,12 +54,15 @@ make clean
 
 ## Options and Usage:
 
-Usage: echo <OPTIONS> --cert <CERT> --key <KEY>
-Options:
-  -c, --cert <CERT>
-  -k, --key <KEY>
-  -p, --port <PORT>                default: 4433
-      --bind-addr <BIND_ADDR>      default: 127.0.0.1
-      --msg-id-size <MSG_ID_SIZE>  default: 64
-  -h, --help                       Print help
-  -V, --version                    Print version
+Usage: echo OPTIONS --cert CERT --key KEY
+
+|       Flags       |  Arguments  |  Default  |
+| ----------------- | ----------- | --------- |
+| -c, --cert        | CERT        |           |
+| -k, --key         | KEY         |           |
+| -p, --port        | PORT        |    4433   |
+| -b, --bind-addr   | BIND_ADDR   | 127.0.0.1 |
+| -m, --msg-id-size | MSG_ID_SIZE |     64    |
+| -h, --help        |           |           |
+| -V, --version     |           |           |
+
