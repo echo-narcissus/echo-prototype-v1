@@ -64,6 +64,7 @@ impl Connection {
         }
 
         // Process any decrypted plaintext.
+        println!("processing plaintext");
         self.process_incoming_plaintext();
 
         // If we have data to send (either plaintext or encrypted), re-register.
@@ -139,6 +140,7 @@ impl Connection {
 
     // Handle a parsed operation
     fn handle_operation(&mut self, op: Operation) {
+        println!("handling operation");
         match op {
             Operation::Store { id, data, ttl } => {
                 let mut store = self.message_store.lock().unwrap();

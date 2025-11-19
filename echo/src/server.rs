@@ -8,8 +8,9 @@ use slab::Slab;
 use std::io;
 use std::net::SocketAddr;
 use std::sync::Arc;
+use std::time::Duration;
 
-const SERVER_TOKEN: Token = Token(0);
+const SERVER_TOKEN: Token = Token(usize::MAX);
 
 pub(crate) struct TlsServer {
     server_socket: TcpListener,
@@ -50,7 +51,7 @@ impl TlsServer {
     pub(crate) fn run(&mut self, verbose: bool) -> io::Result<()> {
         let mut events = Events::with_capacity(1024);
         loop {
-            self.poll.poll(&mut events, None)?;
+            self.poll.poll(&mut events, Some(Duration::from_secs(1)))?;
 
             for event in &events {
                 match event.token() {
